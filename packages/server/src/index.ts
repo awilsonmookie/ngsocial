@@ -1,33 +1,37 @@
-import express, { Application } from 'express';
-import { ApolloServer } from 'apollo-server-express';
-import schema from './graphql/schema';
-import cors from 'cors';
-import 'reflect-metadata';
-import { createConnection, Connection, Repository, getRepository} from 'typeorm';
+import express, {Application} from 'express';
+import {ApolloServer, Config, gql } from 'apollo-server-express';
+import {IResolvers} from '@graphql-tools/utils';
 
-const connection: Promise<Connection> = createConnection();
+const typeDefs = gql`
+    type Query {
+        message: String!
+    }
+`
+const resolvers: IResolvers = {
+    Query: {
+        message: () => 'It Works!'
+    }
+};
+const config: Config = {
+    typeDefs: typeDefs,
+    resolvers: resolvers
+}
 
-connection.then( () => {
-    startApolloServer();
-}).catch(error => console.log("Database connection Error: ", error));
-
-
-
-async function startApolloServer(){
+async function startApolloServer(config: Config ){
     const PORT = 8080;
     const app: Application = express();
-
-    app.use(cors());
-
-    const server: ApolloServer = new ApolloServer( { schema });
+    const server: ApolloServer = new ApolloServer(config);
 
     await server.start();
-
     server.applyMiddleware({
         app,
         path: '/graphql'
     });
+
     app.listen(PORT, () => {
         console.log('Server is running at http://localhost:${PORT}');
+
     });
 }
+
+startApolloServer(config);
