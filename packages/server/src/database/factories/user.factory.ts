@@ -1,10 +1,11 @@
-import Faker from 'faker';
+import { Faker } from '@faker-js/faker';
 import { define } from 'typeorm-seeding';
 import { User } from '../../entity/User';
 
-define(User,  (faker: typeof Faker) =>{
+
+define(User,  (faker: Faker) =>{
     const user = new User()
-    user.fullName = faker.name.findName();
+    user.fullName = faker.name.fullName();
     user.bio = faker.lorem.sentence();
     user.email = faker.internet.email();
     user.username = faker.internet.userName();
@@ -13,4 +14,8 @@ define(User,  (faker: typeof Faker) =>{
     user.coverImage = faker.image.imageUrl();
     user.postsCount = 200;
     user.createdAt = faker.date.past();
+    return user;
 });
+
+
+

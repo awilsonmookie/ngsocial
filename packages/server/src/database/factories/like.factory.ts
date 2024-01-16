@@ -1,8 +1,8 @@
-import Faker from 'faker';
+import { Faker } from '@faker-js/faker';
 import { define } from 'typeorm-seeding';
 import { Like } from '../../entity/Like';
 
-define( Like, (faker: typeof Faker) => {
+define( Like, (faker: Faker) => {
     const like = new Like();
     like.createdAt = faker.date.past();
 

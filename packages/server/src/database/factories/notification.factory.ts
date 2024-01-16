@@ -1,8 +1,8 @@
-import Faker from 'faker';
-import { define } from 'typeorm -seeding';
+import { Faker } from '@faker-js/faker';
+import { define } from 'typeorm-seeding';
 import { Notification } from '../../entity/Notification';
 
-define( Notification, (faker: typeof Faker) => {
+define( Notification, (faker: Faker) => {
     const notification = new Notification();
 
     notification.text = faker.lorem.words();
